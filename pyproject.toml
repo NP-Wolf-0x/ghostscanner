@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostscanner"
+version = "1.0.0"
+description = "High-performance asynchronous port scanner with stealth timing and clean reporting"
+authors = [{name = "NP-Wolf"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "rich>=13.0",
+    "click>=8.1",
+    "reportlab>=4.0",
+]
+
+[project.scripts]
+ghostscanner = "src.ghostscanner:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-09-20T01:03:06.625318+00:00",
+  "scanner": "GhostScanner v1.0",
+  "hosts": {
+    "127.0.0.1": {
+      "scan_time_seconds": 1.049,
+      "open_ports": [
+        {
+          "port": 631,
+          "service": "ipp",
+          "banner": "",
+          "latency_ms": 104.54
+        },
+        {
+          "port": 902,
+          "service": "vmware-auth",
+          "banner": "220 VMware Authentication Daemon Version 1.10: SSL Required, ServerDaemonProtocol:SOAP, MKSDisplayProtocol:VNC , VMXARGS",
+          "latency_ms": 53.38
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: ghostscanner
+Version: 1.0.0
+Summary: High-performance asynchronous port scanner with stealth timing and clean reporting
+Author: NP-Wolf
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: rich>=13.0
+Requires-Dist: click>=8.1
+Requires-Dist: reportlab>=4.0

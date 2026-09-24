@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Reports and logs
+*.json
+*.csv
+*.pdf
+*.log
+logs/
+
+# IDE / system files
+.vscode/
+.idea/
+.DS_Store
+*.swp

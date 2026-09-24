@@ -1,0 +1,3 @@
+Host,Port,Service,Banner,Latency_ms
+127.0.0.1,631,ipp,,9.37
+127.0.0.1,902,vmware-auth,"220 VMware Authentication Daemon Version 1.10: SSL Required, ServerDaemonProtocol:SOAP, MKSDisplayProtocol:VNC , VMXARGS",8.89
