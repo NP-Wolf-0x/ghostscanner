@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
-"""Utility helpers for GhostScanner."""
+"""Utility helpers for GhostScanner Professional"""
 
 import ipaddress
 import random
 from typing import List, Set
 from pathlib import Path
 
-
-# Most common ports (used with --top)
+# Real Nmap-style top ports (most common)
 TOP_PORTS = [
-    21, 22, 23, 25, 53, 80, 110, 111, 135, 139, 143, 443, 445, 993, 995,
-    1433, 1521, 1723, 3306, 3389, 5432, 5900, 5901, 6379, 8080, 8443, 8888,
-    27017, 631, 902
+    7, 9, 13, 21, 22, 23, 25, 26, 37, 53, 79, 80, 81, 88, 106, 110, 111,
+    113, 119, 135, 139, 143, 144, 179, 199, 389, 427, 443, 444, 445, 465,
+    513, 514, 515, 543, 544, 548, 554, 587, 631, 646, 873, 990, 993, 995,
+    1025, 1026, 1027, 1028, 1029, 1110, 1433, 1720, 1723, 1755, 1900,
+    2000, 2049, 2121, 2717, 3000, 3128, 3306, 3389, 3986, 4899, 5000,
+    5009, 5051, 5060, 5101, 5190, 5357, 5432, 5631, 5666, 5800, 5900,
+    6000, 6001, 6646, 7070, 8000, 8008, 8009, 8080, 8081, 8443, 8888,
+    9100, 9999, 10000, 32768, 49152, 49153, 49154, 49155, 49156, 49157
 ]
 
+COMMON_UDP_PORTS = [53, 67, 68, 69, 123, 137, 138, 161, 162, 500, 514, 520, 1900, 4500, 5353]
 
 def parse_targets(target_input: str) -> List[str]:
     targets: Set[str] = set()
@@ -29,7 +34,6 @@ def parse_targets(target_input: str) -> List[str]:
 
     return sorted(targets, key=lambda x: ipaddress.ip_address(x) if _is_ip(x) else x)
 
-
 def _expand_target(target: str) -> List[str]:
     target = target.strip()
     try:
@@ -38,7 +42,6 @@ def _expand_target(target: str) -> List[str]:
     except ValueError:
         return [target]
 
-
 def _is_ip(value: str) -> bool:
     try:
         ipaddress.ip_address(value)
@@ -46,13 +49,12 @@ def _is_ip(value: str) -> bool:
     except ValueError:
         return False
 
-
-def parse_ports(port_str: str, use_top: bool = False) -> List[int]:
+def parse_ports(port_str: str | None, use_top: bool = False, udp: bool = False) -> List[int]:
     if use_top:
-        return TOP_PORTS
+        return COMMON_UDP_PORTS if udp else TOP_PORTS
 
     if not port_str:
-        return TOP_PORTS
+        return COMMON_UDP_PORTS if udp else TOP_PORTS
 
     ports: Set[int] = set()
     for part in port_str.split(","):
@@ -71,31 +73,5 @@ def parse_ports(port_str: str, use_top: bool = False) -> List[int]:
 
     return sorted(p for p in ports if 1 <= p <= 65535)
 
-
-def random_jitter(base: float = 0.05, variance: float = 0.03) -> float:
+def random_jitter(base: float = 0.03, variance: float = 0.025) -> float:
     return max(0.0, base + random.uniform(-variance, variance))
-
-
-SERVICE_MAP = {
-    21: "ftp", 22: "ssh", 23: "telnet", 25: "smtp", 53: "dns",
-    80: "http", 110: "pop3", 111: "rpcbind", 135: "msrpc", 139: "netbios-ssn",
-    143: "imap", 443: "https", 445: "microsoft-ds", 993: "imaps", 995: "pop3s",
-    1433: "ms-sql", 1521: "oracle", 1723: "pptp", 3306: "mysql",
-    3389: "rdp", 5432: "postgresql", 5900: "vnc", 5901: "vnc",
-    6379: "redis", 8080: "http-proxy", 8443: "https-alt", 8888: "http-alt",
-    27017: "mongodb", 631: "ipp", 902: "vmware-auth"
-}
-
-
-def guess_service(port: int, banner: str = "") -> str:
-    if banner:
-        banner_l = banner.lower()
-        if "ssh" in banner_l: return "ssh"
-        if "http" in banner_l or "nginx" in banner_l or "apache" in banner_l: return "http"
-        if "ftp" in banner_l: return "ftp"
-        if "smtp" in banner_l: return "smtp"
-        if "mysql" in banner_l: return "mysql"
-        if "redis" in banner_l: return "redis"
-        if "vmware" in banner_l: return "vmware-auth"
-        if "ipp" in banner_l or "cups" in banner_l: return "ipp"
-    return SERVICE_MAP.get(port, "unknown")
